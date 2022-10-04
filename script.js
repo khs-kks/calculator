@@ -11,17 +11,21 @@ const subtract = function (x, y) {
 };
 
 const multiply = function (x, y) {
-
+  
     return x * y;
 }
 
 const divide = function (x, y) {
-
+    if (y === 0) {
+        return "lmao";
+    }
     return x / y;
 }
 
 
 const operate = function (operator, x, y) {
+    x = +x;
+    y = +y;
     let solution = 0;
     switch(operator) {
         case "+":
@@ -40,17 +44,43 @@ const operate = function (operator, x, y) {
     return solution;
 }
 
+const evaluateCalculation = function () {
+    display.textContent = operate(user_input[1],user_input[0],user_input[2]);
+    if (user_input[3] === "="){
+        user_input.splice(0,user_input.length)
+    } else {
+        let buffer = user_input[3];
+        user_input.splice(0,user_input.length)
+        user_input.push(+display.textContent);
+        user_input.push(buffer);
+
+    }
+  
+}
+
 const numbers = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('.operator');
 const display = document.querySelector('p');
-// const equal_sign = document.querySelector('.operate');
+const empty_array = document.querySelector('.clear');
+const backspace = document.querySelector('.backspace');
+
 let display_content = display.textContent;
 let first_number = 0;
 let second_number = 0;
 let operation = "";
+const user_input = [];
+let isLastOperator = false;
+let wasNumberLast = false;
+let isFirstNumber = true;
+let isSecondNumber = false;
+let first_round = true;
 
 numbers.forEach( (number) => {
     number.addEventListener('click', () => {
+        if (isLastOperator) {
+            display.textContent = "";
+            isLastOperator = false;
+        }
         display.textContent += number.textContent;
 
     })
@@ -58,35 +88,31 @@ numbers.forEach( (number) => {
 
 operators.forEach( (operator) => {
     operator.addEventListener('click', () => {
+        isLastOperator = true;
         
-        switch(operator.textContent) {
-            case "+":
-                operation = "+";
-                display.textContent += operator.textContent;
-                break;
-            case "-":
-                operation = "-";
-                display.textContent += operator.textContent;
-                break;
-            case "*":
-                operation = "*";
-                display.textContent += operator.textContent;
-                break;
-            case "/":
-                operation = "/";
-                display.textContent += operator.textContent;
-                break;
-            case "=":
-                second_number = Number(display.textContent.split(operation)[1]);
-                first_number = Number(display.textContent.split(operation)[0]);
+        if (display.textContent.length > 0) {
+            first_number = +display.textContent;
 
-                display.textContent = operate(operation, first_number, second_number);
-                break;
+            user_input.push(first_number);
+     
+        }
+        user_input.push(operator.textContent);
+        console.log(user_input)
+
+  
+        if (user_input.length > 3) {
+            evaluateCalculation();
         }
         
     })
 })
 
-// equal_sign.addEventListener('click', () => {
+empty_array.addEventListener('click', () => {
+    display.textContent = "";
+    user_input.splice(0,user_input.length)
+})
 
-// })
+backspace.addEventListener('click', () => {
+    display.textContent = display.textContent.slice(0, display.textContent.length - 1);
+})
+
