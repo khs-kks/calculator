@@ -4,8 +4,14 @@ const display = document.querySelector('p');
 const empty_array = document.querySelector('.clear');
 const backspace = document.querySelector('.backspace');
 const decimal = document.querySelector('.decimal');
+const windowche = document.querySelector('html');
 
-let result = 0;
+const key_numbers = "1234567890.";
+const key_operators = "-+*/";
+const user_input = [];
+
+let first_number = 0;
+let isLastOperator = false;
 
 const add = function (x, y) {
 
@@ -65,55 +71,44 @@ const evaluateCalculation = function () {
   
 }
 
-// const setDisplayContent = function (text) {
-//     if ( text.length > 19 ) {
-//         text = text.slice(0 , 20);
-//     }
-//     display.textContent = text;
-// }
+const populateDisplay = function(value) {
+    if (isLastOperator) {
+        display.textContent = "";
+        isLastOperator = false;
+    }
 
-let display_content = display.textContent;
-let first_number = 0;
-let second_number = 0;
-let operation = "";
-const user_input = [];
-let isLastOperator = false;
-let wasNumberLast = false;
-let isFirstNumber = true;
-let isSecondNumber = false;
-let first_round = true;
+    if ( display.textContent.length < 20 ) {
+    display.textContent += value;
+    }
+}
+
+const enterOperator = function(value) {
+    isLastOperator = true;
+        
+    if (display.textContent.length > 0) {
+        first_number = +display.textContent;
+
+        user_input.push(first_number);
+ 
+    }
+    user_input.push(value);
+    console.log(user_input)
+
+
+    if (user_input.length > 3) {
+        evaluateCalculation();
+    }
+}
 
 numbers.forEach( (number) => {
     number.addEventListener('click', () => {
-        if (isLastOperator) {
-            display.textContent = "";
-            isLastOperator = false;
-        }
-
-        if ( display.textContent.length < 20 ) {
-        display.textContent += number.textContent;
-        }
+        populateDisplay(number.textContent)
     })
 })
 
 operators.forEach( (operator) => {
     operator.addEventListener('click', () => {
-        isLastOperator = true;
-        
-        if (display.textContent.length > 0) {
-            first_number = +display.textContent;
-
-            user_input.push(first_number);
-     
-        }
-        user_input.push(operator.textContent);
-        console.log(user_input)
-
-  
-        if (user_input.length > 3) {
-            evaluateCalculation();
-        }
-        
+        enterOperator(operator.textContent);
     })
 })
 
@@ -129,6 +124,19 @@ backspace.addEventListener('click', () => {
 decimal.addEventListener('click', () => {
     if (!display.textContent.includes('.') && display.textContent.length < 19) {
         display.textContent += '.';        
+    }
+})
+
+
+windowche.addEventListener('keydown', (event) => {
+    if (key_numbers.includes(event.key)) {
+        populateDisplay(event.key);
+    } else if (key_operators.includes(event.key)) {
+        enterOperator(event.key)
+    } else if (event.key === "Backspace") {
+        display.textContent = display.textContent.slice(0, display.textContent.length - 1);
+    } else if (event.key === "Enter" ) {
+        enterOperator("=");
     }
 })
 
