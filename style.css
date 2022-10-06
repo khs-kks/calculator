@@ -1,24 +1,31 @@
 body {
     display: flex;
     justify-content: center;
+    font-family: monospace;
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 2px solid black;
+    border: 10px solid black;
     min-width: 300px;
     min-height: 400px;
     margin-top: 100px;
     padding: 25px;
+    background-color: rgba(47,47,47,1);
 }
 
 .display {
-    min-height: 100px;
-    border: 1px solid green;
+    height: 100px;
+    width: 320px;
     font-size: 30px;
     text-align: center;
+    background-color: #b2b9b7;
+    border: 10px solid black;
+    border-bottom: 5px solid black;
+    font-weight: bolder;
+
 }
 
 
@@ -28,7 +35,8 @@ body {
     justify-content: space-between;
     align-content: space-around;
     min-height: 250px;
-    border: 1px solid blue;
+    border: 10px solid black;
+    border-top: 5px solid black;
     max-width: 300px;
     gap: 5px 5px;
     padding: 10px;
@@ -39,5 +47,24 @@ button {
     min-width: 65px;
     min-height: 45px;
     font-size: 20px;
+    font-weight: bolder;
+    border: solid black;
+    border-radius: 14px;
 }
+
+.number {
+    background-color: #217c7e;
+}
+
+.operator,
+.equal {
+    background-color: #FF8F1F;
+}
+
+.backspace,
+.decimal,
+.clear {
+    background-color: dodgerblue;
+}
+
 

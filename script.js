@@ -5,6 +5,7 @@ const empty_array = document.querySelector('.clear');
 const backspace = document.querySelector('.backspace');
 const decimal = document.querySelector('.decimal');
 const windowche = document.querySelector('html');
+const equal_sign = document.querySelector('.equal');
 
 const key_numbers = "1234567890.";
 const key_operators = "-+*/";
@@ -58,7 +59,7 @@ const operate = function (operator, x, y) {
 }
 
 const evaluateCalculation = function () {
-    display.textContent = operate(user_input[1],user_input[0],user_input[2]).slice(0,20);
+    display.textContent = operate(user_input[1],user_input[0],user_input[2]).slice(0,17);
     if (user_input[3] === "="){
         user_input.splice(0,user_input.length)
     } else {
@@ -77,7 +78,7 @@ const populateDisplay = function(value) {
         isLastOperator = false;
     }
 
-    if ( display.textContent.length < 20 ) {
+    if ( display.textContent.length < 17 ) {
     display.textContent += value;
     }
 }
@@ -91,6 +92,7 @@ const enterOperator = function(value) {
         user_input.push(first_number);
  
     }
+    
     user_input.push(value);
     console.log(user_input)
 
@@ -112,6 +114,12 @@ operators.forEach( (operator) => {
     })
 })
 
+equal_sign.addEventListener('click', () => {
+    if (user_input.length === 2) {
+        enterOperator(equal_sign.textContent);
+    }
+})
+
 empty_array.addEventListener('click', () => {
     display.textContent = "";
     user_input.splice(0,user_input.length)
@@ -122,7 +130,7 @@ backspace.addEventListener('click', () => {
 })
 
 decimal.addEventListener('click', () => {
-    if (!display.textContent.includes('.') && display.textContent.length < 19) {
+    if (!display.textContent.includes('.') && display.textContent.length < 16) {
         display.textContent += '.';        
     }
 })
@@ -136,7 +144,9 @@ windowche.addEventListener('keydown', (event) => {
     } else if (event.key === "Backspace") {
         display.textContent = display.textContent.slice(0, display.textContent.length - 1);
     } else if (event.key === "Enter" ) {
-        enterOperator("=");
+        if (user_input.length === 2) {
+            enterOperator("=");
+        }
     }
 })
 
