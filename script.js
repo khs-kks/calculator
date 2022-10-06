@@ -13,6 +13,7 @@ const user_input = [];
 
 let first_number = 0;
 let isLastOperator = false;
+let isLastNumber = false;
 
 const add = function (x, y) {
 
@@ -78,27 +79,32 @@ const populateDisplay = function(value) {
         isLastOperator = false;
     }
 
+    isLastNumber = true;
+
     if ( display.textContent.length < 17 ) {
     display.textContent += value;
     }
 }
 
 const enterOperator = function(value) {
-    isLastOperator = true;
-        
-    if (display.textContent.length > 0) {
-        first_number = +display.textContent;
+    if (isLastNumber) {
+        isLastOperator = true;
+        isLastNumber = false;
+            
+        if (display.textContent.length > 0) {
+            first_number = +display.textContent;
 
-        user_input.push(first_number);
- 
-    }
+            user_input.push(first_number);
     
-    user_input.push(value);
-    console.log(user_input)
+        }
+        
+        user_input.push(value);
+        console.log(user_input)
 
 
-    if (user_input.length > 3) {
-        evaluateCalculation();
+        if (user_input.length > 3) {
+            evaluateCalculation();
+        }
     }
 }
 
@@ -123,6 +129,8 @@ equal_sign.addEventListener('click', () => {
 empty_array.addEventListener('click', () => {
     display.textContent = "";
     user_input.splice(0,user_input.length)
+    isLastNumber = false;
+    isLastOperator = false;
 })
 
 backspace.addEventListener('click', () => {
